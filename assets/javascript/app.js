@@ -25,14 +25,14 @@ $(document).ready(function () {
 
     function Questions(q1, a1, a2, a3, a4, correct) {
         this.questionText = q1;
-        this.answer1 = a1;
-        this.answer2 = a2;
-        this.answer3 = a3;
-        this.answer4 = a4;
+        this.answera = a1;
+        this.answerb = a2;
+        this.answerc = a3;
+        this.answerd = a4;
         this.correctAnswer = correct;
     };
 
-    
+
     // create some questions
     Q1 = new Questions("Quarterback for the New England Patriots, who won the 2018 Associated Press NFL Most Valuable Player Award?", "a. Matt Ryan", "b. Aaron Rodgers", "c. Tom Brady", "d. Cam Newton", "c");
     Q2 = new Questions("question 2 text", "answer 1", "answer 2", "answer 3", "answer 4", 2);
@@ -75,17 +75,19 @@ $(document).ready(function () {
     };
 
     function updateScore() {
-        score += time;
-        $("#scoreArea").text(score);
+        if (clockRunning) {
+            score += time;
+            $("#scoreArea").text(score);
+        };
     };
 
     function selectQuestion() {
         currentQuestion = allQuestions[qCount];
         $("#questionArea").text(currentQuestion.questionText);
-        $("#answer1").text(currentQuestion.answer1);
-        $("#answer2").text(currentQuestion.answer2);
-        $("#answer3").text(currentQuestion.answer3);
-        $("#answer4").text(currentQuestion.answer4);
+        $("#answera").text(currentQuestion.answera);
+        $("#answerb").text(currentQuestion.answerb);
+        $("#answerc").text(currentQuestion.answerc);
+        $("#answerd").text(currentQuestion.answerd);
 
         // Update qCounter to call next question when run again
         qCount++
@@ -95,22 +97,55 @@ $(document).ready(function () {
     };
 
     function checkAnswer(letter) {
+
+        // tell user if they were right or wrong
         if (letter === currentQuestion.correctAnswer) {
             updateScore();
-        };
+            $("#questionArea").append("<h3>CORRECT!</h3>")
+        } else {
+            $("#questionArea").append("<h3>WRONG ANSWER!</h3>")
+        }
         // run showAnswer function
-        // showAnswer(letter);
+        showAnswer(letter);
     };
 
     function showAnswer(letter) {
-        // highlight correct answer (letter)
-        // tell user if they were right or wrong
-        // mute wrong answers
         // turn off hover function
-        // turn off click events
+        $("#answerTable").removeClass("table-hover");
+        // mute wrong answers
+        $(".answers").addClass("text-muted");
+        var highlightAnswer = "#answer" + letter;
+
+        if (letter !== currentQuestion.correctAnswer) {
+            // highlight wrong answer
+            $(highlightAnswer).removeClass("text-muted");
+            $(highlightAnswer).addClass("bg-danger text-white font-italic");
+        }
+
+        // highlight the correct answer
+        var rightAnswer = "#answer" + currentQuestion.correctAnswer;
+        $(rightAnswer).removeClass("text-muted");
+        $(rightAnswer).addClass("bg-success text-white font-weight-bold");
+
         // timeout 5 seconds
-        // select new question, start over
+        setTimeout(initGame, 5000);
+
     };
+
+    function initGame() {
+        //.removeClass() with no parameters to remove all, .addClass("...") to add back to default
+
+        $("#answerTable").addClass("table-hover");
+        $("#answera").removeClass();
+        $("#answerb").removeClass();
+        $("#answerc").removeClass();
+        $("#answerd").removeClass();
+        $(".answers").addClass("answers");
+
+        // select new question, reset table properties 
+        selectQuestion();
+        startTimer();
+    }
 
     // ==================================
     // LISTENERS
@@ -124,8 +159,11 @@ $(document).ready(function () {
     });
 
     $(".answers").on("click", function () {
-        var answerChoice = $(this).attr("data-value");
-        checkAnswer(answerChoice);
+        while (clockRunning) {
+            var answerChoice = $(this).attr("data-value");
+            checkAnswer(answerChoice);
+            stopTimer();
+        }
     });
 
 
