@@ -1,0 +1,23 @@
+html, body {
+    text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+#triviaGameArea {
+    background-color: lemonchiffon;
+    border: solid 4px blueviolet;
+    display: none;
+}
+
+.h2 {
+    color: green;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 4rem;
+    padding: 0;
+    margin: 0;
+}
+
+.h3 {
+    font-size: 1.5rem;
+}
+

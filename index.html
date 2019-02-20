@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Trivia!</title>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+        integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <!-- My stylesheet -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.3.1.js"
+        integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+
+</head>
+
+<div class="container ">
+    <div class="jumbotron align-items-center justify-content-center">
+
+        <!-- GAME START BUTTON -->
+        <button type="button" class="btn btn-dark" id="btnStart">START GAME</button>
+
+        <!-- GAME WINDOW -->
+        <div id="triviaGameArea">
+            <h1 class="mt-2">CODE CAMP TRIVIA!</h1>
+            <div class="row" id="updatesArea">
+                <div class="col sm-6 h2" id="timerArea">
+                    
+                </div>
+                <div class="col sm-6 h2" id="scoreArea">
+                    0
+                </div>
+
+            </div>
+            <div class="row mt-0 pt-0">
+                <div class="col sm-6">TIME LEFT</div>
+                <div class="col sm-6">YOUR SCORE</div>
+
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-12 h3" id="questionArea">
+                    Question text goes here lorem ipsum dolor eset qui?
+                </div>
+            </div>
+
+            <div class="row mt-4 justify-content-md-center">
+                <div class="col-md-10">
+                    <table class="table table-hover">
+
+                        <tbody>
+                            <tr>
+                                <td id="answer1" class="answers" data-value="a">Answer text goes here</td>
+                            </tr>
+                            <tr>
+                                <td id="answer2" class="answers" data-value="b">Answer text goes here</td>
+
+                            </tr>
+                            <tr>
+                                <td id="answer3" class="answers" data-value="c">Answer text goes here</td>
+
+                            </tr>
+                            <tr>
+                                <td id="answer4" class="answers" data-value="d">Answer text goes here</td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+<body>
+
+    <!-- Javascript for bootstrap -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+        integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+        integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+        crossorigin="anonymous"></script>
+    <!-- My game JS -->
+    <script type="text/javascript" src="assets/javascript/app.js"></script>
+</body>
+
+</html>
