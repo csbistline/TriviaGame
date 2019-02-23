@@ -1,11 +1,6 @@
 $(document).ready(function () {
 
     // ==================================
-    // INITIALIZE BOARD
-    // ==================================
-
-
-    // ==================================
     // GLOBAL VARIABLES
     // ==================================
 
@@ -36,6 +31,7 @@ $(document).ready(function () {
 
 
     // create some questions
+    // maybe figure out how to call this from a file
     Q1 = new Questions("Quarterback for the New England Patriots, who won the 2018 Associated Press NFL Most Valuable Player Award?", "a. Matt Ryan", "b. Tom Brady", "c. Aaron Rodgers", "d. Cam Newton", "b", "The AP award is considered the de facto official NFL MVP award.");
     Q2 = new Questions("Which NHL team won the 2018 Stanley Cup finals against the Vegas Golden Knights?", "a. Washington Capitals", "b. Nashville Predators", "c. Toronto Maple Leafs", "d. Pittsburgh Penguins", "a", "Washington beat Vegas four games to one.");
     Q3 = new Questions("Who was the National Basketball Association's Most Valuable Player for the 2017-2018 season?", "a. Kristaps Porzingis", "b. Victor Oladipo", "c. James Harden", "d. Karl-Anthony Towns", "c", "Harden was also the season's top scorer.");
@@ -87,23 +83,25 @@ $(document).ready(function () {
 
     // select the next question in the list
     function selectQuestion() {
-        console.log(qCount+1, allQuestions.length)
+        console.log(qCount + 1, allQuestions.length)
 
         if (qCount > allQuestions.length - 1) {
             // go to final score screen
             finalScreen();
         } else {
-            // show the next question
+            // show the next question and restart the timer
             currentQuestion = allQuestions[qCount];
             $("#questionArea").text(currentQuestion.questionText);
             $("#answera").text(currentQuestion.answera);
             $("#answerb").text(currentQuestion.answerb);
             $("#answerc").text(currentQuestion.answerc);
             $("#answerd").text(currentQuestion.answerd);
+            
+            // Update qCounter to call next question when run again
+            qCount++
             startTimer();
         }
-        // Update qCounter to call next question when run again
-        qCount++
+
 
     };
 
@@ -161,10 +159,11 @@ $(document).ready(function () {
         selectQuestion();
     }
 
+    // hide game area and load a screen with results
     function finalScreen() {
         // create 3 divs and insert them into the correct places in the HTML
         $("#finalHead").html("SPORTS TRIVIA RESULTS");
-        
+
         var finalRight = $("<div>");
         finalRight.html(rightCount + "<p>CORRECT</p>");
         $("#finalCorrect").html(finalRight);
@@ -177,12 +176,10 @@ $(document).ready(function () {
         finalScore.html(score + "<p>FINAL SCORE</p>");
         $("#finalScore").html(finalScore);
 
+        // hide game area, show final results, stop the timer
         $("#triviaGameArea").hide();
         $("#finalArea").fadeIn();
-
-
-        stopTimer();        
-
+        stopTimer();
     }
 
     // ==================================
@@ -215,7 +212,5 @@ $(document).ready(function () {
             stopTimer();
         }
     });
-
-
 
 });
