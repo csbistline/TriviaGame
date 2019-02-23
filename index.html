@@ -14,24 +14,43 @@
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.3.1.js"
         integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
- 
+
 </head>
 
 <div class="container ">
     <div class="jumbotron align-items-center justify-content-center">
 
-        <!-- GAME START BUTTON -->
-        <button type="button" class="btn btn-dark" id="btnStart">START GAME</button>
+        <!-- GAME RESULTS -->
+        <div id="finalArea">
+                <h1 class="mt-2" id="finalHead"></h1>
+
+
+            <div class="row">
+                <div class="col sm-4 h2" id="finalCorrect">
+
+                </div>
+                <div class="col sm-4 h2" id="finalIncorrect">
+
+                </div>
+                <div class="col sm-4 h2" id="finalScore">
+
+                </div>
+
+            </div>
+
+            <button type="button" class="btn btn-dark btnStart">START GAME</button>
+        </div>
+
 
         <!-- GAME WINDOW -->
         <div id="triviaGameArea">
-            <h1 class="mt-2">CODE CAMP TRIVIA!</h1>
+            <h1 class="mt-2">SPORTS TRIVIA!</h1>
             <div class="row" id="updatesArea">
                 <div class="col sm-6 h2" id="timerArea">
-                    
+
                 </div>
                 <div class="col sm-6 h2" id="scoreArea">
-                    0
+                    
                 </div>
 
             </div>
@@ -72,6 +91,7 @@
                 </div>
 
             </div>
+
 
         </div>
     </div>

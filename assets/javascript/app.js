@@ -13,8 +13,9 @@ $(document).ready(function () {
     var clockRunning = false;
     var time = 0;
     var score = 0;
-    const maxTime = 30;
-    var isCorrect = false;
+    var rightCount = 0;
+    var wrongCount = 0;
+    const maxTime = 15;
     var allQuestions;
     var currentQuestion;
     var qCount = 0;
@@ -35,12 +36,12 @@ $(document).ready(function () {
 
 
     // create some questions
-    Q1 = new Questions("Quarterback for the New England Patriots, who won the 2018 Associated Press NFL Most Valuable Player Award?", "a. Matt Ryan", "b. Aaron Rodgers", "c. Tom Brady", "d. Cam Newton", "c", "Tom Brady - The AP award is considered the de facto official NFL MVP award.");
-    Q2 = new Questions("Which NHL team won the 2018 Stanley Cup finals against the Vegas Golden Knights?", "a. Nashville Predators", "b. Toronto Maple Leafs", "c. Washington Capitals", "d. Pittsburgh Penguins", "c", "Washington Capitals - Washington beat Vegas four games to one.");
-    Q3 = new Questions("Who was the National Basketball Association's Most Valuable Player (MVP) for the 2017-2018 season?", "a. Kristaps Porzingis", "b. Victor Oladipo", "c. James Harden", "d. Karl-Anthony Towns", "c", "James Harden - James Harden was the season's top scorer.");
-    Q4 = new Questions("Held in June at Shinnecock Hills Golf Club in New York, who won the 2018 U.S. Open Golf Championship? ", "a. Tommy Fleetwood", "b. Patrick Reed", "c. Brooks Koepka", "d. Dustin Johnson",  "c","Brooks Koepka - With the win, Brooks became the seventh player to win consecutive U.S. Opens.");
-    Q5 = new Questions("What NFL team won Super Bowl 52 by a score of 41 to 33 on February 4, 2018? ", "a. Green Bay Packers", "b. Philadelphia Eagles", "c. New England Patriots", "d. Dallas Cowboys", "b", "Philadelphia Eagles - The Philadelphia Eagles beat the New England Patriots. It was their first Super Bowl win.");
-    Q6 = new Questions("Held on April 26-28, who was the first pick in the first round at the 2018 NFL draft?", "a. Saquon Barkley", "b. Denzel Ward", "c. Sam Darnold", "d. Baker Mayfield", "d", "Baker Mayfield - Five quarterbacks were selected in the first round.");
+    Q1 = new Questions("Quarterback for the New England Patriots, who won the 2018 Associated Press NFL Most Valuable Player Award?", "a. Matt Ryan", "b. Tom Brady", "c. Aaron Rodgers", "d. Cam Newton", "b", "The AP award is considered the de facto official NFL MVP award.");
+    Q2 = new Questions("Which NHL team won the 2018 Stanley Cup finals against the Vegas Golden Knights?", "a. Washington Capitals", "b. Nashville Predators", "c. Toronto Maple Leafs", "d. Pittsburgh Penguins", "a", "Washington beat Vegas four games to one.");
+    Q3 = new Questions("Who was the National Basketball Association's Most Valuable Player for the 2017-2018 season?", "a. Kristaps Porzingis", "b. Victor Oladipo", "c. James Harden", "d. Karl-Anthony Towns", "c", "Harden was also the season's top scorer.");
+    Q4 = new Questions("Held in June at Shinnecock Hills Golf Club in New York, who won the 2018 U.S. Open Golf Championship? ", "a. Tommy Fleetwood", "b. Patrick Reed", "c. Brooks Koepka", "d. Dustin Johnson", "c", "With the win, Koepka became the seventh player to win consecutive U.S. Opens.");
+    Q5 = new Questions("What NFL team won Super Bowl 52 by a score of 41 to 33 on February 4, 2018? ", "a. Green Bay Packers", "b. Philadelphia Eagles", "c. New England Patriots", "d. Dallas Cowboys", "b", "The Philadelphia Eagles beat the New England Patriots. It was their first Super Bowl win.");
+    Q6 = new Questions("Held on April 26-28, who was the first pick in the first round at the 2018 NFL draft?", "a. Saquon Barkley", "b. Denzel Ward", "c. Sam Darnold", "d. Baker Mayfield", "d", "Mayfield was among five quarterbacks selected in the first round.");
 
     allQuestions = [Q1, Q2, Q3, Q4, Q5, Q6];
 
@@ -72,9 +73,11 @@ $(document).ready(function () {
         $("#timerArea").text(time);
         if (time <= 0) {
             stopTimer();
+            checkAnswer();
         }
     };
 
+    //update the player's score
     function updateScore() {
         if (clockRunning) {
             score += time;
@@ -82,34 +85,45 @@ $(document).ready(function () {
         };
     };
 
+    // select the next question in the list
     function selectQuestion() {
-        currentQuestion = allQuestions[qCount];
-        $("#questionArea").text(currentQuestion.questionText);
-        $("#answera").text(currentQuestion.answera);
-        $("#answerb").text(currentQuestion.answerb);
-        $("#answerc").text(currentQuestion.answerc);
-        $("#answerd").text(currentQuestion.answerd);
+        console.log(qCount+1, allQuestions.length)
 
+        if (qCount > allQuestions.length - 1) {
+            // go to final score screen
+            finalScreen();
+        } else {
+            // show the next question
+            currentQuestion = allQuestions[qCount];
+            $("#questionArea").text(currentQuestion.questionText);
+            $("#answera").text(currentQuestion.answera);
+            $("#answerb").text(currentQuestion.answerb);
+            $("#answerc").text(currentQuestion.answerc);
+            $("#answerd").text(currentQuestion.answerd);
+            startTimer();
+        }
         // Update qCounter to call next question when run again
         qCount++
-        if (qCount === allQuestions.length) {
-            // go to final score screen
-        };
+
     };
 
+    // check if answer is correct
     function checkAnswer(letter) {
 
         // tell user if they were right or wrong
         if (letter === currentQuestion.correctAnswer) {
             updateScore();
+            rightCount++;
             $("#questionArea").html("<h3>CORRECT!</h3>").append(currentQuestion.explained);
         } else {
+            wrongCount++;
             $("#questionArea").html("<h3>INCORRECT!</h3>").append(currentQuestion.explained);
         }
         // run showAnswer function
         showAnswer(letter);
     };
- 
+
+    // show the correct and incorrect answers
     function showAnswer(letter) {
         // turn off hover function
         $("#answerTable").removeClass("table-hover");
@@ -128,12 +142,13 @@ $(document).ready(function () {
         $(rightAnswer).removeClass("text-muted");
         $(rightAnswer).addClass("bg-success text-white font-weight-bold");
 
-        // timeout 5 seconds
-        setTimeout(initGame, 5000);
+        // timeout 5 seconds, move on to next question
+        setTimeout(resetAnswer, 4000);
 
     };
 
-    function initGame() {
+    // clear shading from answersArea, select new question and restart the clock
+    function resetAnswer() {
         //.removeClass() with no parameters to remove all, .addClass("...") to add back to default
         $("#answerTable").addClass("table-hover");
         $("#answera").removeClass();
@@ -144,18 +159,53 @@ $(document).ready(function () {
 
         // select new question, reset table properties 
         selectQuestion();
-        startTimer();
+    }
+
+    function finalScreen() {
+        // create 3 divs and insert them into the correct places in the HTML
+        $("#finalHead").html("SPORTS TRIVIA RESULTS");
+        
+        var finalRight = $("<div>");
+        finalRight.html(rightCount + "<p>CORRECT</p>");
+        $("#finalCorrect").html(finalRight);
+
+        var finalWrong = $("<div>");
+        finalWrong.html(wrongCount + "<p>INCORRECT</p>");
+        $("#finalIncorrect").html(finalWrong);
+
+        var finalScore = $("<div>");
+        finalScore.html(score + "<p>FINAL SCORE</p>");
+        $("#finalScore").html(finalScore);
+
+        $("#triviaGameArea").hide();
+        $("#finalArea").fadeIn();
+
+
+        stopTimer();        
+
     }
 
     // ==================================
     // LISTENERS
     // ==================================
 
-    $("#btnStart").on("click", function () {
+    $(".btnStart").on("click", function () {
+
+        // reset global variables
+        clockRunning = false;
+        time = 0;
+        score = 0;
+        rightCount = 0;
+        wrongCount = 0;
+        qCount = 0;
+        $("#scoreArea").text(score);
         $("#triviaGameArea").fadeIn();
-        $("#btnStart").toggle();
+        $("#finalArea").toggle();
+        // $(".btnStart").toggle();
         selectQuestion();
         startTimer();
+
+
     });
 
     $(".answers").on("click", function () {
